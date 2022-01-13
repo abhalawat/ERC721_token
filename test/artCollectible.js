@@ -18,15 +18,6 @@ contract('validator artcollectible contract()', (accounts) => {
     expect(owner).to.equal(accounts[0]);
   });
 
-  //it('Should set base URI',async () =>{
-     //let artCollectibleContract = await artCollectible.deployed();
-     //const baseURI = "https://ipfs.io/ipfs/" ;
-     //const baseURI_sol = await artCollectibleContract.setBaseURI();
-     //expect(baseURI).to.equal(baseURI_sol);                                          
-  //});
-
-  
-
   it('owner of tokenId 1 should be first contract from contracts list which is also the address that deployed contract', async () => {
     let artCollectibleContract = await artCollectible.deployed();
     const tokenURI =
@@ -38,10 +29,10 @@ contract('validator artcollectible contract()', (accounts) => {
 
   it(' token URI of existing token ',async () =>{
     let artCollectibleContract = await artCollectible.deployed();
-    let metadata = await artCollectibleContract.tokenURI(1);
+    let tokenURISol = await artCollectibleContract.tokenURI(1);
     const tokenURI =
       'https://ipfs.io/ipfs/QmYz4BiRqBTcMPqh4u3nXYzaYPbXREpmPyGnuwFjHGkuEG';
-    expect(metadata).to.equal(tokenURI);
+    expect(tokenURISol).to.equal(tokenURI);
   });
 
   it(' token URI of non existing token ',async () =>{
@@ -57,6 +48,7 @@ contract('validator artcollectible contract()', (accounts) => {
     await expectRevert(
       this.artCollectibleContract.tokenURI(2),'ERC721Metadata: URI query for nonexistent token'
     );
+  
   });
 
   it('Should total supply',async () =>{
@@ -65,4 +57,21 @@ contract('validator artcollectible contract()', (accounts) => {
     totalSupplySol = await artCollectibleContract.totalSupply()
     expect(totalSupplySol).to.equal(totalSupply)
   });
+
+  it('Should set base URI',async () =>{
+    let artCollectibleContract = await artCollectible.deployed();
+    //const baseURI = "https://ipfs.io/ipfs/" ;
+    let tokenURISol = await artCollectibleContract.tokenURI(1);
+    await artCollectibleContract.setBaseURI("https://ipfs.io/ipfs/");
+    expect(tokenURISol).to.equal("https://ipfs.io/ipfs/QmYz4BiRqBTcMPqh4u3nXYzaYPbXREpmPyGnuwFjHGkuEG");                                          
+ });
+
+ it('does not allow anyone but the contract owner to change base URI',async () =>{
+  let artCollectibleContract = await artCollectible.deployed();
+  
+  await truffleAssert.reverts(artCollectibleContract.setBaseURI('https;//anyone.com',{
+    from: accounts[5]
+  }),"Ownable: caller isnot the owner")
+});
+
 });
