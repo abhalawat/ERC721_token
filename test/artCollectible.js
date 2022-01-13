@@ -1,5 +1,5 @@
 const truffleAssert = require('truffle-assertions');
-const {expectRevert } = require('@openzeppelin/test-helpers');
+const {expectRevert,BN } = require('@openzeppelin/test-helpers');
 
 
 const assert = require('assert');
@@ -46,7 +46,7 @@ contract('validator artcollectible contract()', (accounts) => {
     //}
     //expect(err).to.equal(errorSol);
     await expectRevert(
-      this.artCollectibleContract.tokenURI(2),'ERC721Metadata: URI query for nonexistent token'
+       artCollectibleContract.tokenURI(2),'ERC721Metadata: URI query for nonexistent token'
     );
   
   });
@@ -55,7 +55,7 @@ contract('validator artcollectible contract()', (accounts) => {
     let artCollectibleContract = await artCollectible.deployed();
     const totalSupply = 1
     totalSupplySol = await artCollectibleContract.totalSupply()
-    expect(totalSupplySol).to.equal(totalSupply)
+    expect(totalSupplySol.).to.equal(totalSupply)
   });
 
   it('Should set base URI',async () =>{
@@ -71,7 +71,7 @@ contract('validator artcollectible contract()', (accounts) => {
   
   await truffleAssert.reverts(artCollectibleContract.setBaseURI('https;//anyone.com',{
     from: accounts[5]
-  }),"Ownable: caller isnot the owner")
+  }),"Ownable: caller is not the owner")
 });
 
 });
