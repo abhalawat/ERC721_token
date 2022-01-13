@@ -56,7 +56,6 @@ contract ArtCollectible is Ownable, ERC721 {
         if (bytes(base).length == 0) {
             return _tokenURI;
         }
-        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).
         if (bytes(_tokenURI).length > 0) {
             return string(abi.encodePacked(base, _tokenURI));
         }
