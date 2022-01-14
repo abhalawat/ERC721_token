@@ -47,6 +47,7 @@ contract ArtCollectible is Ownable, ERC721 {
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"
+            
         );
 
         string memory _tokenURI = _tokenURIs[tokenId];
@@ -56,8 +57,9 @@ contract ArtCollectible is Ownable, ERC721 {
         if (bytes(base).length == 0) {
             return _tokenURI;
         }
+        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).
         if (bytes(_tokenURI).length > 0) {
-            return string(abi.encodePacked(base, _tokenURI));
+            return string(abi.encodePacked(base, tokenId.toString()));
         }
         // If there is a baseURI but no tokenURI, concatenate the tokenID to the baseURI.
         return string(abi.encodePacked(base, tokenId.toString()));
